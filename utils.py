@@ -1,7 +1,10 @@
 from locales import lang
 import os
 
-def get_lang(locale, string, replacer={}):
+def get_locales():
+    return list(lang.keys())
+
+def get_lang(string, replacer={}, locale='en'):
     if locale in lang.keys() and string in lang[locale].keys():
         text = lang[locale][string]
 
