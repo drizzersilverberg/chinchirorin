@@ -175,6 +175,7 @@ def start():
             play = play_confirm(locale=locale)
 
     print(get_lang('your_final_potch', replacer={'_POTCH_': potch_adjuster(potch)}, locale=locale))
+    input()
 
 if __name__ == '__main__':
     start()
