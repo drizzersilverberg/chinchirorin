@@ -1,6 +1,9 @@
 from random import randint
 from utils import get_lang, clear_screen
 
+MAX_POTCH = 999999
+MIN_POTCH = 0
+
 evaluate_info = {
     'REVERSE_TRIPLE' : get_lang('en', 'player_pays_triple'),
     'REVERSE_DOUBLE' : get_lang('en', 'player_pays_double'),
@@ -78,7 +81,7 @@ def player_roll(player_name):
     result = None
     for i in range(3):
         dices = roll()
-        print(f'{player_name} dices: {str(dices)} - {evaluate_text(evaluate(dices))}')
+        print(f"{player_name} {get_lang('en', 'dices')}: {str(dices)} - {evaluate_text(evaluate(dices))}")
         result = evaluate(dices)
         if result is not None:
             break
@@ -86,20 +89,20 @@ def player_roll(player_name):
 
 def compare_player_result(potch, bet, p1_result, p2_result):
     if p1_result is None and p2_result is not None:
-        print('tir win')
+        print(get_lang('en', 'player_win', {'_PLAYER_': 'Tir'}))
         potch = potch + bet
     elif p1_result is not None and p2_result is None:
-        print('gaspar win')
+        print(get_lang('en', 'player_win', {'_PLAYER_': 'Gaspar'}))
         potch = potch - bet
     elif p1_result == p2_result:
         pass
     elif p1_result > p2_result:
-        print('gaspar win')
+        print(get_lang('en', 'player_win', {'_PLAYER_': 'Gaspar'}))
         potch = potch - bet
     elif p1_result < p2_result:
-        print('tir win')
+        print(get_lang('en', 'player_win', {'_PLAYER_': 'Tir'}))
         potch = potch + bet
-    
+
     return potch
 
 def game(potch):
@@ -132,13 +135,13 @@ def game(potch):
     return potch
 
 def game_over_check(potch):
-    return True if potch <= 0 or potch > 999999 else False
+    return True if potch <= MIN_POTCH or potch > MAX_POTCH else False
 
 def potch_adjuster(potch):
-    if potch <= 0:
-        return 0
-    elif potch > 999999:
-        return 999999
+    if potch <= MIN_POTCH:
+        return MIN_POTCH
+    elif potch > MAX_POTCH:
+        return MAX_POTCH
     else:
         return potch
 
@@ -147,14 +150,14 @@ def start():
     game_over = False
     play = play_confirm()
     while play is True and game_over is False:
-        print('Your potch:', potch)
+        print(get_lang('en', 'your_potch', {'_POTCH_': potch_adjuster(potch)}))
         potch = game(potch)
-        print('Current potch:', potch_adjuster(potch))
+        print(get_lang('en', 'current_potch', {'_POTCH_': potch_adjuster(potch)}))
         game_over = game_over_check(potch)
         if game_over == False:
             play = play_confirm()
 
-    print('Your final potch:', potch_adjuster(potch))
+    print(get_lang('en', 'your_final_potch', {'_POTCH_': potch_adjuster(potch)}))
 
 if __name__ == '__main__':
     start()

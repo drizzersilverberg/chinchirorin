@@ -7,7 +7,7 @@ def get_lang(locale, string, replacer={}):
 
         if bool(replacer):
             for key in replacer.keys():
-                text = text.replace(key, replacer[key])
+                text = text.replace(key, str(replacer[key]))
 
         return text
 
